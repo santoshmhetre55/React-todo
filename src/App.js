@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Row, Col, Button, FormControl, Form } from 'react-bootstrap';
 
 import './App.css';
 
@@ -13,10 +14,9 @@ class App extends Component {
   }
 
    addToList(e, param) {
-     e.preventDefault();
-    
+     console.log('param',param);
+    e.preventDefault();
     this.state.data.push(param);
-    
     this.setState({
       data:this.state.data,
     })
@@ -24,36 +24,54 @@ class App extends Component {
   }
 
   checkAvailable(val) {
-console.log("check",val)
+   console.log("check",val)
   
   }
   render() {
     let input;
     return (
-      <div className="App">
-        <p className="App-intro">
-        {this.state.name}
-        </p>
-    
-          <div>add</div>
-          <input 
-          name='todoinput' 
-          type='text' 
-          ref={node => { input = node; }}
-          onChange={()=>{this.checkAvailable(input.value)}}
+      <div>
+      <Row >
+        <Col md={4}>
+          <h2>
+            To Do
+          </h2>
+        </Col>
+        <Col md={8}/> 
+      </Row>
+      <Row >
+      <Form onSubmit={this.addToList}>
+        <Col md={2}>
+        <FormControl
+            type="text"
+            placeholder="Enter text"
+            ref={node => { 
+              console.log(node);
+              input = node; }}
+            onChange={(e)=>{
+              this.checkAvailable(e.target.value)}}
           />
-          <button onClick={(e) => {
-        this.addToList(e, input.value);
-        input.value = '';
-      }}>Add</button>
-
-      <p>list</p>
-        <ul>
-          {console.log(this.state.data)}
+          </Col>
+          <Col md={1}>
+          <Button 
+          type='submit'
+          bsStyle="primary"
+        //   onClick={(e) => { 
+        //    // console.log(e);
+        //   this.addToList(e, input.value);
+        //   input.value = '';}
+        // }
+        >Add
+        </Button>
+        </Col>
+        </Form>
+      </Row>
+        <div>
+          <ul>
           {this.state.data.map((item,i)=><li key={i}>{item}</li>)}
         </ul>
-      </div>
-      
+        </div>
+      </div>     
     );
   }
 }
